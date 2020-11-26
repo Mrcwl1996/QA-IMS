@@ -1,7 +1,10 @@
 Coverage: 34%
-# Project Title
+# Inventory Management System 
 
-One Paragraph of project description goes here
+The application is designed so that an end user can interact with via a Command-Line Interface (CLI). 
+The inventory management system is designed to Add,View,Update and delete and customer infomation in the database.
+Secondly it is able to also Add,View,Update and delate and item from the item database. 
+Lastly, the application is able to integrate the item from the itemlist and automatically generate a unique order with the customer details and calculate the total cost of the order. 
 
 ## Getting Started
 
@@ -9,7 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You will need JAVA installed in the virtual
 
 ```
 Give examples
@@ -74,7 +77,7 @@ We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
 
-* **Chris Perrins** - *Initial work* - [christophperrins](https://github.com/christophperrins)
+* **William Chu** - *Initial work* - [WilliamChu](https://github.com/christophperrins)
 
 ## License
 
