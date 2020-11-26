@@ -8,8 +8,13 @@ public class Item {
 	
 	
 	
-	public Item(Long itemID, String itemName, Double itemPrice) {
+	public Item(String itemName, Double itemPrice) {
 		super();
+		this.itemName = itemName;
+		this.itemPrice = itemPrice;
+	}
+	
+	public Item(Long itemID, String itemName, Double itemPrice) {
 		this.itemID = itemID;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
@@ -56,7 +61,7 @@ public class Item {
 	
 	@Override
 	public String toString() {
-		return "item ID:" + itemID + " Item name:" + itemName + " Price:" + itemPrice;
+		return "item ID: " + itemID + " Item name: " + itemName + " Price: " + itemPrice;
 	}
 	
 	@Override

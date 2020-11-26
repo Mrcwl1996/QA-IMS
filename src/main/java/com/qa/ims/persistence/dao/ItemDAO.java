@@ -21,9 +21,9 @@ public class ItemDAO implements Dao<Item> {
 
 	@Override
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
-		Long itemID = resultSet.getLong("item id");
-		String itemName = resultSet.getString("item_name");
-		Double itemPrice = resultSet.getDouble("price");
+		Long itemID = resultSet.getLong("ItemID");
+		String itemName = resultSet.getString("ItemName");
+		Double itemPrice = resultSet.getDouble("ItemPrice");
 		return new Item(itemID, itemName, itemPrice);
 	} 
 
@@ -36,7 +36,7 @@ public class ItemDAO implements Dao<Item> {
 	public List<Item> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("select * from Items");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * from items");) {
 			List<Item> items = new ArrayList<>();
 			while (resultSet.next()) {
 				items.add(modelFromResultSet(resultSet));
@@ -51,7 +51,7 @@ public class ItemDAO implements Dao<Item> {
 	public Item readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY itemID DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM items ORDER BY ItemID DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -70,8 +70,7 @@ public class ItemDAO implements Dao<Item> {
 	public Item create(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO items(Item Name, Item Price) values('" + item.getItemName()
-					+ "','" + item.getItemPrice() + "')");
+			statement.executeUpdate("INSERT INTO items(ItemName, ItemPrice) values('" + item.getItemName() + "','" +item.getItemPrice() + "')");
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -80,10 +79,10 @@ public class ItemDAO implements Dao<Item> {
 		return null;
 	}
 	
-	public Item readItem(Item item) {
+	public Item readItem(Long itemID) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM item where item id = " + item.getItemID());) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM items where ItemID = " + itemID);) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -103,8 +102,9 @@ public class ItemDAO implements Dao<Item> {
 	public Item update(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("update item set Item_ID ='" + item.getItemID() + "', Item Name ='"
-					+ item.getItemName()+ "' where Item Price =" + item.getItemPrice());
+			statement.executeUpdate("update items set ItemPrice ='" + item.getItemPrice() + "', ItemName ='"
+					+ item.getItemName()+ "' where ItemID =" + item.getItemID());
+			
 			return readItem(item.getItemID());
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -122,7 +122,7 @@ public class ItemDAO implements Dao<Item> {
 	public int delete(long itemID) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			return statement.executeUpdate("delete from customers where id = " + itemID);
+			return statement.executeUpdate("DELETE FROM items WHERE ItemID = " + itemID);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
