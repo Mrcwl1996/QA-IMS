@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ims</a> &gt; <a href="index.source.html" class="el_package">com.qa.ims.persistence.dao</a> &gt; <span class="el_source">ItemDAO.java</span></div><h1>ItemDAO.java</h1><pre class="source lang-java linenums">package com.qa.ims.persistence.dao;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.qa.ims.persistence.domain.Item;
+import com.qa.ims.utils.DBUtils;
+
+
+
+<span class="nc" id="L18">public class ItemDAO implements Dao&lt;Item&gt; {</span>
+	
+<span class="fc" id="L20">	public static final Logger LOGGER = LogManager.getLogger();</span>
+
+	@Override
+	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="nc" id="L24">		Long itemID = resultSet.getLong(&quot;ItemID&quot;);</span>
+<span class="nc" id="L25">		String itemName = resultSet.getString(&quot;ItemName&quot;);</span>
+<span class="nc" id="L26">		Double itemPrice = resultSet.getDouble(&quot;ItemPrice&quot;);</span>
+<span class="nc" id="L27">		return new Item(itemID, itemName, itemPrice);</span>
+	} 
+
+	/**
+	 * Reads all items from the database
+	 * 
+	 * @return A list of items
+	 */
+	@Override
+	public List&lt;Item&gt; readAll() {
+<span class="nc" id="L37">		try (Connection connection = DBUtils.getInstance().getConnection();</span>
+<span class="nc" id="L38">				Statement statement = connection.createStatement();</span>
+<span class="nc" id="L39">				ResultSet resultSet = statement.executeQuery(&quot;SELECT * from items&quot;);) {</span>
+<span class="nc" id="L40">			List&lt;Item&gt; items = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">			while (resultSet.next()) {</span>
+<span class="nc" id="L42">				items.add(modelFromResultSet(resultSet));</span>
+			}
+<span class="nc" id="L44">			return items;</span>
+<span class="nc" id="L45">		} catch (SQLException e) {</span>
+<span class="nc" id="L46">			LOGGER.debug(e);</span>
+<span class="nc" id="L47">			LOGGER.error(e.getMessage());</span>
+		}
+<span class="nc" id="L49">		return new ArrayList&lt;&gt;();</span>
+	}
+	public Item readLatest() {
+<span class="nc" id="L52">		try (Connection connection = DBUtils.getInstance().getConnection();</span>
+<span class="nc" id="L53">				Statement statement = connection.createStatement();</span>
+<span class="nc" id="L54">				ResultSet resultSet = statement.executeQuery(&quot;SELECT * FROM items ORDER BY ItemID DESC LIMIT 1&quot;);) {</span>
+<span class="nc" id="L55">			resultSet.next();</span>
+<span class="nc" id="L56">			return modelFromResultSet(resultSet);</span>
+<span class="nc" id="L57">		} catch (Exception e) {</span>
+<span class="nc" id="L58">			LOGGER.debug(e);</span>
+<span class="nc" id="L59">			LOGGER.error(e.getMessage());</span>
+		}
+<span class="nc" id="L61">		return null;</span>
+	}
+
+	/**
+	 * Creates a item in the database
+	 * 
+	 * @param item - takes in a item object. itemID will be ignored
+	 */
+	
+	public Item create(Item item) {
+<span class="nc" id="L71">		try (Connection connection = DBUtils.getInstance().getConnection();</span>
+<span class="nc" id="L72">				Statement statement = connection.createStatement();) {</span>
+<span class="nc" id="L73">			statement.executeUpdate(&quot;INSERT INTO items(ItemName, ItemPrice) values('&quot; + item.getItemName() + &quot;','&quot; +item.getItemPrice() + &quot;')&quot;);</span>
+<span class="nc" id="L74">			return readLatest();</span>
+<span class="nc" id="L75">		} catch (Exception e) {</span>
+<span class="nc" id="L76">			LOGGER.debug(e);</span>
+<span class="nc" id="L77">			LOGGER.error(e.getMessage());</span>
+		}
+<span class="nc" id="L79">		return null;</span>
+	}
+	
+	public Item readItem(Long itemID) {
+<span class="nc" id="L83">		try (Connection connection = DBUtils.getInstance().getConnection();</span>
+<span class="nc" id="L84">				Statement statement = connection.createStatement();</span>
+<span class="nc" id="L85">				ResultSet resultSet = statement.executeQuery(&quot;SELECT * FROM items where ItemID = &quot; + itemID);) {</span>
+<span class="nc" id="L86">			resultSet.next();</span>
+<span class="nc" id="L87">			return modelFromResultSet(resultSet);</span>
+<span class="nc" id="L88">		} catch (Exception e) {</span>
+<span class="nc" id="L89">			LOGGER.debug(e);</span>
+<span class="nc" id="L90">			LOGGER.error(e.getMessage());</span>
+		}
+<span class="nc" id="L92">		return null;</span>
+	}
+	
+	/**
+	 * Updates a customer in the database
+	 * 
+	 * @param customer - takes in a item object, the itemID field will be used to
+	 *                 update that customer in the database
+	 * @return
+	 */
+	public Item update(Item item) {
+<span class="nc" id="L103">		try (Connection connection = DBUtils.getInstance().getConnection();</span>
+<span class="nc" id="L104">				Statement statement = connection.createStatement();) {</span>
+<span class="nc" id="L105">			statement.executeUpdate(&quot;update items set ItemPrice ='&quot; + item.getItemPrice() + &quot;', ItemName ='&quot;</span>
+<span class="nc" id="L106">					+ item.getItemName()+ &quot;' where ItemID =&quot; + item.getItemID());</span>
+			
+<span class="nc" id="L108">			return readItem(item.getItemID());</span>
+<span class="nc" id="L109">		} catch (Exception e) {</span>
+<span class="nc" id="L110">			LOGGER.debug(e);</span>
+<span class="nc" id="L111">			LOGGER.error(e.getMessage());</span>
+		}
+<span class="nc" id="L113">		return null;</span>
+	}
+	/**
+	 * Deletes a item in the database
+	 * 
+	 * @param id - id of the customer
+	 */
+
+	@Override
+	public int delete(long itemID) {
+<span class="nc" id="L123">		try (Connection connection = DBUtils.getInstance().getConnection();</span>
+<span class="nc" id="L124">				Statement statement = connection.createStatement();) {</span>
+<span class="nc" id="L125">			return statement.executeUpdate(&quot;DELETE FROM items WHERE ItemID = &quot; + itemID);</span>
+<span class="nc" id="L126">		} catch (Exception e) {</span>
+<span class="nc" id="L127">			LOGGER.debug(e);</span>
+<span class="nc" id="L128">			LOGGER.error(e.getMessage());</span>
+		}
+<span class="nc" id="L130">		return 0;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
