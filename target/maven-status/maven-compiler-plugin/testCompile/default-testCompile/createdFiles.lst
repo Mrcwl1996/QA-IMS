@@ -1,0 +1,3 @@
+com\qa\ims\controllers\ItemControllerTest.class
+com\qa\ims\controllers\OrderControllerTest.class
+com\qa\ims\controllers\CustomerControllerTest.class
