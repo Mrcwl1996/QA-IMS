@@ -62,7 +62,6 @@ TYPE read
 and you will see:
 
 ID       First Name:     Surname:
-------------------------------------
  1       William         Chu
 
 ## Running the tests
