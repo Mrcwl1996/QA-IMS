@@ -1,4 +1,3 @@
-Coverage: 34%
 # Inventory Management System 
 
 The application is designed so that an end user can interact with via a Command-Line Interface (CLI). 
