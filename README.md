@@ -12,22 +12,84 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You will need JAVA installed in the virtual
-You Will need to have access to MYSQL workbench and GCP 
-for build, Maven must be added to your 
+Install: Eclipse IDE for Java
 
+Install: Java Development Kit 14
 
+Install: Maven
+
+Install: MySQL Server (for localhost running/testing) and MySQL Workbench 
+
+OR
+
+Run a MySQL Server on a GCP instance
+
+## Installing
+Once this repo has been downloaded or cloned, open the project in Eclipse:
+
+File -> Import -> Select Maven/Existing Maven Projects -> Browse to the folder and click Finish
+Ensure that a localhost MySQL is set-up on your computer by opening MySQL Workbench, and under MySQL Connections is
+
+root
+localhost:3306
+Right click Runner.Java -> Run With... -> Java Application
+
+Username:
+
+root
+Password:
+
+root
+
+The domain menu is then shown.
+
+## Example with Customer
+Which entity would you like to use?
+CUSTOMER: Information about customers
+ITEM: Individual Items
+ORDER: Purchases of items
+STOP: To close the application
+TYPE customer
+then it will give you and option to CREATE, READ , UPDATE, DELETE:
+
+TYPE create
+
+then enter the name of the customer you would like to create. 
+e.g William Chu
+to access the database table 
+
+TYPE read
+and you will see:
+
+ID       First Name:     Surname:
+------------------------------------
+ 1       William         Chu
 
 ## Running the tests
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+There are three main test suites in the project. These are stored under:
 
-### Unit Tests 
+src/test/java
+The test are split into Controllers -DAO -Domain
 
-Explain what these tests test, why and how to run them
+Each test suite has a corresponding test suite that tests if the program has failed correctly. An example of this is:
 
-```
-Give an example
+CustomerDAOTest.java
+
+## Deployment
+To run the .jar file from the command-line:
+- navigate to the directory .jar file
+- execute the following command once you have ensured that a MySQL localhost Server is running on your machine:
+
+Example:
+
+java -jar ims-0.0.1-jar-with-dependencies.jar
+Username:
+
+root
+Password:
+
+root
 
 ## Built With
 
