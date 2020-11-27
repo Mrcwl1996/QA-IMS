@@ -101,7 +101,8 @@ We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
 
-* **William Chu** - *Initial work* - [WilliamChu](https://github.com/mrcwl1996)
+* **Chris Perrins** - *Initial work* - [christophperrins](https://github.com/christophperrins)
+* **William Chu** - *Additional work* - [WilliamChu](https://github.com/mrcwl1996)
 
 ## License
 
